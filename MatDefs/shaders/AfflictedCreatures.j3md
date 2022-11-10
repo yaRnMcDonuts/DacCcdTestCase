@@ -1,0 +1,370 @@
+MaterialDef PBR RockTower {
+
+    MaterialParameters {
+
+
+        Vector3 HSVScalar
+        Vector4 ColorCycleEffectVector 
+
+        // Alpha threshold for fragment discarding
+        Float AlphaDiscardThreshold (AlphaTestFallOff)
+
+        Vector3 SunLightIntensity
+
+        //metalness of the material
+        Float Metallic : 1.0
+        //Roughness of the material
+        Float Roughness : 1.0        
+        // Base material color
+        Color BaseColor : 1.0 1.0 1.0 1.0
+        // The emissive color of the object
+        Color Emissive        
+        // the emissive power
+        Float EmissivePower : 3.0        
+        // the emissive intensity
+        Float EmissiveIntensity : 2.0
+
+        // BaseColor map
+        Texture2D BaseColorMap
+
+        // Metallic map
+        Texture2D MetallicMap -LINEAR
+        
+        // Roughness Map
+        Texture2D RoughnessMap -LINEAR
+
+        //Metallic and Roughness are packed respectively in the b and g channel of a single map
+        // r: unspecified
+        // g: Roughness
+        // b: Metallic
+        Texture2D MetallicRoughnessMap -LINEAR
+        
+        // Texture of the emissive parts of the material
+        Texture2D EmissiveMap
+
+        // Normal map
+        Texture2D NormalMap -LINEAR
+
+        //The type of normal map: -1.0 (DirectX), 1.0 (OpenGl)
+        Float NormalType : -1.0
+
+        // For Spec gloss pipeline
+        Boolean UseSpecGloss
+        Texture2D SpecularMap
+        Texture2D GlossinessMap
+        Texture2D SpecularGlossinessMap
+        Color Specular : 1.0 1.0 1.0 1.0
+        Float Glossiness : 1.0
+
+        // Parallax/height map
+        Texture2D ParallaxMap -LINEAR
+
+        //Set to true is parallax map is stored in the alpha channel of the normal map
+        Boolean PackedNormalParallax   
+
+        //Sets the relief height for parallax mapping
+        Float ParallaxHeight : 0.05       
+
+        //Set to true to activate Steep Parallax mapping
+        Boolean SteepParallax
+
+        // Set to Use Lightmap
+        Texture2D LightMap
+
+        // Set to use TexCoord2 for the lightmap sampling
+        Boolean SeparateTexCoord
+        // the light map is a gray scale ao map, on ly the r channel will be read.
+        Boolean LightMapAsAOMap
+
+        Boolean AoPackedInMRMap
+
+        //shadows
+        Int FilterMode
+        Boolean HardwareShadows
+
+        Texture2D ShadowMap0
+        Texture2D ShadowMap1
+        Texture2D ShadowMap2
+        Texture2D ShadowMap3
+        //pointLights
+        Texture2D ShadowMap4
+        Texture2D ShadowMap5
+        
+        Float ShadowIntensity
+        Vector4 Splits
+        Vector2 FadeInfo
+
+        Matrix4 LightViewProjectionMatrix0
+        Matrix4 LightViewProjectionMatrix1
+        Matrix4 LightViewProjectionMatrix2
+        Matrix4 LightViewProjectionMatrix3
+        //pointLight
+        Matrix4 LightViewProjectionMatrix4
+        Matrix4 LightViewProjectionMatrix5   
+        Vector3 LightPos
+        Vector3 LightDir
+
+        Float PCFEdge
+        Float ShadowMapSize
+
+        // For hardware skinning
+        Int NumberOfBones
+        Matrix4Array BoneMatrices
+
+        // For Morph animation
+        FloatArray MorphWeights
+        Int NumberOfMorphTargets
+        Int NumberOfTargetsBuffers
+                
+        //For instancing
+        Boolean UseInstancing
+
+        //For Vertex Color
+        Boolean UseVertexColor
+
+        Boolean BackfaceShadows : false
+
+        
+
+        Texture2D AfflictionAlphaMap
+        Texture2D AfflictionEmissiveMap
+        Texture2D SplatNormalMap 
+        Texture2D AfflictionParallaxMap
+
+        Texture2D AfflictionRoughnessMap
+        Texture2D AfflictionMetallicMap
+        Texture2D AfflictionMetallicRoughness
+
+        Color AfflictionEmissiveColor
+        Float AfflictionEmissivePower
+
+        Float AfflictionPercent
+ 
+
+        Float DissolveValue
+        Vector4 DissolveColor
+
+        
+        Boolean IsSkeletal
+        Vector2 SkeletalRattleValue
+        Texture2D SkeletalRattleMap
+
+        Vector2 SkeletalDamagePercent
+
+        Texture2D NoiseMap
+
+        Vector3 WorldScaleVar;
+
+    }
+
+    Technique {
+        LightMode SinglePassAndImageBased
+        
+        VertexShader GLSL110 GLSL150:   MatDefs/vert/AfflictedCreatures.vert
+        FragmentShader GLSL110 GLSL150: MatDefs/frag/AfflictedCreatures.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            CameraPosition
+            WorldMatrix
+            WorldNormalMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+            Time
+        }
+
+        Defines {         
+
+            HSV_SCALAR : HSVScalar
+            COLOR_CYCLE_EFFECT : ColorCycleEffectVector
+
+            AFFLICTIONTEXTURE : AfflictionAlphaMap
+            DISSOLVE : DissolveColor
+
+            NOISEMAP : NoiseMap
+
+            WORLDSCALE : WorldScaleVar
+
+            SKELETAL_DAMAGE_PERCENT : SkeletalDamagePercent
+
+            AFFLICTIONEMISSIVE : AfflictionEmissiveMap
+            AFFLICTIONEMISSIVECOLOR : AfflictionEmissiveColor
+
+            INDOOR_SUN_LIGHT_INTENSITY : SunLightIntensity
+
+            SKELETAL_RATTLE_MAP : SkeletalRattleMap
+            SKELETAL_RATTLE_VALUE : SkeletalRattleValue
+            IS_SKELETAL : IsSkeletal
+
+            BASECOLORMAP : BaseColorMap            
+            NORMALMAP : NormalMap
+            METALLICMAP : MetallicMap
+            ROUGHNESSMAP : RoughnessMap
+            EMISSIVEMAP : EmissiveMap
+            EMISSIVE : Emissive
+            SPECGLOSSPIPELINE : UseSpecGloss
+            PARALLAXMAP : ParallaxMap
+            NORMALMAP_PARALLAX : PackedNormalParallax
+            STEEP_PARALLAX : SteepParallax
+            LIGHTMAP : LightMap
+            SEPARATE_TEXCOORD : SeparateTexCoord
+            DISCARD_ALPHA : AlphaDiscardThreshold                        
+            NUM_BONES : NumberOfBones                        
+            INSTANCING : UseInstancing
+            USE_PACKED_MR: MetallicRoughnessMap
+            USE_PACKED_SG: SpecularGlossinessMap
+            SPECULARMAP : SpecularMap
+            GLOSSINESSMAP : GlossinessMap
+            NORMAL_TYPE: NormalType
+            VERTEX_COLOR : UseVertexColor
+            AO_MAP: LightMapAsAOMap
+            AO_PACKED_IN_MR_MAP : AoPackedInMRMap
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+    }
+
+
+    Technique PreShadow {
+
+        VertexShader GLSL100 GLSL150 :   Common/MatDefs/Shadow/PreShadow.vert
+        FragmentShader GLSL100 GLSL150 : Common/MatDefs/Shadow/PreShadow.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            WorldViewMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+        }
+
+        Defines {
+            DISCARD_ALPHA : AlphaDiscardThreshold
+            NUM_BONES : NumberOfBones
+            INSTANCING : UseInstancing
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+
+        ForcedRenderState {
+            FaceCull Off
+            DepthTest On
+            DepthWrite On
+            PolyOffset 5 3
+            ColorWrite Off
+        }
+
+    }
+
+
+    Technique PostShadow{
+        VertexShader GLSL150:   Common/MatDefs/Shadow/PostShadow.vert
+        FragmentShader GLSL150: Common/MatDefs/Shadow/PostShadow.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            WorldMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+        }
+
+        Defines {
+            HARDWARE_SHADOWS : HardwareShadows
+            FILTER_MODE : FilterMode
+            PCFEDGE : PCFEdge
+            DISCARD_ALPHA : AlphaDiscardThreshold           
+            SHADOWMAP_SIZE : ShadowMapSize
+            SHADOWMAP_SIZE : ShadowMapSize
+            FADE : FadeInfo
+            PSSM : Splits
+            POINTLIGHT : LightViewProjectionMatrix5
+            NUM_BONES : NumberOfBones
+            INSTANCING : UseInstancing
+            BACKFACE_SHADOWS: BackfaceShadows
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+
+        ForcedRenderState {
+            Blend Modulate
+            DepthWrite Off                 
+            PolyOffset -0.1 0
+        }
+    }
+
+    Technique PostShadow{
+        VertexShader GLSL100:   Common/MatDefs/Shadow/PostShadow.vert
+        FragmentShader GLSL100: Common/MatDefs/Shadow/PostShadow.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            WorldMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+        }
+
+        Defines {
+            HARDWARE_SHADOWS : HardwareShadows
+            FILTER_MODE : FilterMode
+            PCFEDGE : PCFEdge
+            DISCARD_ALPHA : AlphaDiscardThreshold           
+            SHADOWMAP_SIZE : ShadowMapSize
+            FADE : FadeInfo
+            PSSM : Splits
+            POINTLIGHT : LightViewProjectionMatrix5
+            NUM_BONES : NumberOfBones
+            INSTANCING : UseInstancing
+            BACKFACE_SHADOWS: BackfaceShadows
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+
+        ForcedRenderState {
+            Blend Modulate
+            DepthWrite Off   
+            PolyOffset -0.1 0  
+        }
+    }
+
+    Technique PreNormalPass {
+
+        VertexShader GLSL100 :   Common/MatDefs/SSAO/normal.vert
+        FragmentShader GLSL100 : Common/MatDefs/SSAO/normal.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            WorldViewMatrix
+            NormalMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+        }
+
+        Defines {
+            NUM_BONES : NumberOfBones
+            INSTANCING : UseInstancing
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+
+    }
+
+    Technique Glow {
+
+        VertexShader GLSL100 GLSL150:   Common/MatDefs/Misc/Unshaded.vert
+        FragmentShader GLSL100 GLSL150: Common/MatDefs/Light/Glow.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            ViewProjectionMatrix
+            ViewMatrix
+        }
+
+        Defines {
+            NEED_TEXCOORD1
+            NUM_BONES : NumberOfBones
+            INSTANCING : UseInstancing
+            NUM_MORPH_TARGETS: NumberOfMorphTargets
+            NUM_TARGETS_BUFFERS: NumberOfTargetsBuffers
+        }
+    }
+
+}

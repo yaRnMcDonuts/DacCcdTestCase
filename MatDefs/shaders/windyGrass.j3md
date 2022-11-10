@@ -1,0 +1,22 @@
+MaterialDef WindyGrass {
+    MaterialParameters {
+    }
+
+    Technique {
+        LightMode SinglePass
+
+        VertexShader   GLSL150 : MatDefs/vert/windyGrass.vert
+        FragmentShader GLSL150 : MatDefs/frag/windyGrass.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+            Time
+        }
+
+        Defines {
+        }
+
+        ForcedRenderState {
+        }
+    }
+}

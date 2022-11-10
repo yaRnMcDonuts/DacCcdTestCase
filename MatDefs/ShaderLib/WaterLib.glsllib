@@ -1,0 +1,18 @@
+
+
+vec4 alterWaterLiveliness(vec4 albedo, float afflictionVal){
+
+        afflictionVal =  (afflictionVal * 0.65) + 0.35;
+        afflictionVal = 1.0- afflictionVal;
+
+        albedo.b *= afflictionVal + 0.022;
+        albedo.g -= 0.1 * (1.0 -afflictionVal);
+        albedo.r -= 0.25 * (1.0 -afflictionVal);
+
+
+        albedo *= 0.6;
+
+        return albedo;
+}
+
+

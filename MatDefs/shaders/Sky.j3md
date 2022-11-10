@@ -1,0 +1,38 @@
+MaterialDef Sky Plane {
+    MaterialParameters {
+        TextureCubeMap Texture
+        TextureCubeMap FinalTexture
+        TextureCubeMap HalfTexture
+
+        Boolean SphereMap
+        Boolean EquirectMap
+        Vector3 NormalScale
+
+        Vector4 Color : 1.0 1.0 1.0 1.0
+
+
+        Float InterpolationValue : 0.0
+    }
+    Technique {
+        VertexShader GLSL100 GLSL150:   Common/MatDefs/Misc/Sky.vert
+        FragmentShader GLSL100 GLSL150: MatDefs/frag/Sky.frag
+
+        WorldParameters {
+            ViewMatrix
+            ProjectionMatrix
+            WorldMatrixInverse
+        }
+
+        Defines {
+            SPHERE_MAP : SphereMap
+            EQUIRECT_MAP : EquirectMap
+            FINAL_TEXTURE : FinalTexture
+            HALF_TEXTURE : HalfTexture
+        }
+
+        RenderState {
+            DepthWrite Off
+            DepthFunc Equal
+        }
+    }
+}

@@ -1,0 +1,32 @@
+Material MyMaterial : MatDefs/shaders/afflictedPbr.j3md {
+    MaterialParameters {
+        EmissivePower : 0.5
+        BackfaceShadows : false
+        LightMapAsAOMap : false
+        Roughness : 0.59999996
+        EmissiveIntensity : 0.0
+        UseSpecGloss : false
+        Glossiness : 1.0
+        BaseColor : 1.0 1.0 1.0 1.0
+        ParallaxHeight : 0.05
+        Metallic : 0.59999996
+        NormalType : 1.0
+        Emissive : 1.0 1.0 1.0 1.0
+        BaseColorMap : Textures/dirtPath0.jpg
+        Specular : 0.23342225 0.23342225 0.23342225 1.0
+        PackedNormalParallax : false
+        SteepParallax : false
+        UseTextureEffects : true
+    }
+    AdditionalRenderState {
+      PointSprite On
+      FaceCull Back
+      AlphaTestFalloff 0.0
+      DepthWrite On
+      ColorWrite On
+      PolyOffset 0.0 0.0
+      DepthTest On
+      Blend Off
+      Wireframe Off
+    }
+}
